@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.21.2">
+    <meta name="project" content="civo v0.1.1">
+    <title>Civo.WebHooks — civo v0.1.1</title>
+    <link rel="stylesheet" href="dist/html-de2388dc2f8074b0a4db.css" />
+    <script src="dist/sidebar_items-5be114019a.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/html-de2388dc2f8074b0a4db.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="readme.html" class="sidebar-projectName">
+civo      </a>
+      <h2 class="sidebar-projectVersion">
+        v0.1.1
+      </h2>
+    </div>
+      <a href="readme.html">
+        <img src="assets/logo.png" alt="civo" class="sidebar-projectImage">
+      </a>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        <small class="app-vsn">civo v0.1.1</small>
+Civo.WebHooks          <a href="https://github.com/Lazarus404/civo/blob/master/lib/civo/webhooks.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Open certain actions taking place within your account, Civo can 
+trigger a JSON POST callback to a URL or your choice.</p>
+<p>Your Webhook handlers are expected to respond within 5 seconds. 
+If they take longer than this, then the failures count will be 
+incremented and the webhook queued for reprocessing. Reprocessing 
+happens at 5 minutes, 30 minutes, 1 hour, 2 hours, 6 hours - and 
+after that the webhook will be disabled.</p>
+<p>The headers of the request from our servers will contain the 
+following two important headers: X-Civo-Event and X-Civo-Signature. 
+X-Civo-Event is a UUID that is unique to this event. Civo don&#39;t track 
+them ourside, but retries of the same event will have the same ID, 
+so you can track it and not process it twice. X-Civo-Signature is an 
+OpenSSL HMAC SHA1 digest of the entire payload using the 
+secret of the webhook. The secret is randomly generated when the 
+webhook is created if one isn&#39;t specified. A simple example of how 
+to calculate this in Elixir would be:</p>
+<pre><code class="nohighlight makeup elixir"><span class="n">signature</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="ss">:crypto</span><span class="o">.</span><span class="n">hmac</span><span class="p" data-group-id="2573423711-1">(</span><span class="ss">:sha</span><span class="p">,</span><span class="w"> </span><span class="n">webhook</span><span class="o">.</span><span class="n">secret</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p" data-group-id="2573423711-1">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Base</span><span class="o">.</span><span class="n">encode16</span><span class="p" data-group-id="2573423711-2">(</span><span class="p" data-group-id="2573423711-2">)</span></code></pre>
+<p>The following events are available to subscribe to:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left">Name</th><th style="text-align: left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><code class="inline">*</code></td><td style="text-align: left">any event happens</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.created</code></td><td style="text-align: left">after the instance has been requested to be built from OpenStack&#39;s Nova</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.active</code></td><td style="text-align: left">when the instance returns an <code class="inline">ACTIVE</code> status after <code class="inline">BUILDING</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.updated</code></td><td style="text-align: left">when the instance is renamed</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.deleted</code></td><td style="text-align: left">when the instance has been requested to be deleted</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.firewall.updated</code></td><td style="text-align: left">after OpenStack&#39;s Nova has been told to change the firewall for an instance</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.rebooted</code></td><td style="text-align: left">after OpenStack&#39;s Nova returns an ACTIVE status for an instance after it had been REBOOTING</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.rebuilt</code></td><td style="text-align: left">after OpenStack&#39;s Nova has been instructed to rebuild an instance (note: not when it&#39;s completed)</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.stopped</code></td><td style="text-align: left">after OpenStack&#39;s Nova has been instructed to stop an instance (note: not when it&#39;s finished shutting down)</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.started</code></td><td style="text-align: left">after OpenStack&#39;s Nova has been instructed to start an instance (note: not when it&#39;s completed booting up and all daemons running)</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.restored</code></td><td style="text-align: left">after OpenStack&#39;s Nova has been instructed to restore an instance from a snapshot (note: not when it&#39;s completed)</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.tags.updated</code></td><td style="text-align: left">when an instance&#39;s tags have changed</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.resized</code></td><td style="text-align: left">after an instance has been resized</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.ip_address.updated</code></td><td style="text-align: left">when a newly launched instance get&#39;s its public IP</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.high_cpu.started</code></td><td style="text-align: left">when an instance&#39;s CPU goes above 80%</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.high_cpu.ended</code></td><td style="text-align: left">when an instance&#39;s CPU drops back below 80%</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.rescued</code></td><td style="text-align: left">after OpenStack&#39;s Nova has been instructed to rescue an instance (note: not when it&#39;s completed being rescued)</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">instance.unrescued</code></td><td style="text-align: left">after OpenStack&#39;s Nova has been instructed to revert an instance from a rescued state (note: not when it&#39;s completed reverting from a rescued state)</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">domain.created</code></td><td style="text-align: left">after a domain name has been added to our DNS service</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">domain.deleted</code></td><td style="text-align: left">after a domain has been removed from our DNS service</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">domain_record.created</code></td><td style="text-align: left">after a DNS record has been added for a domain in our DNS service</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">domain_record.updated</code></td><td style="text-align: left">after a DNS record has been changed for a domain in our DNS service</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">domain_record.deleted</code></td><td style="text-align: left">after a DNS record has been removed for a domain from our DNS service</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">firewall.created</code></td><td style="text-align: left">after OpenStack&#39;s Neutron has been instructed to create the firewall</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">firewall.updated</code></td><td style="text-align: left">after OpenStack&#39;s Neutron has been instructed to rename the firewall</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">firewall.deleted</code></td><td style="text-align: left">after OpenStack&#39;s Neutron has been instructed to remove the firewall</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">firewall_rule.created</code></td><td style="text-align: left">after OpenStack&#39;s Neutron has been instructed to add a rule to a firewall</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">firewall_rule.deleted</code></td><td style="text-align: left">after OpenStack&#39;s Neutron has been instructed to remove a rule from a firewall</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">kubernetes_cluster.created</code></td><td style="text-align: left">after a Kubernetes cluster is initially created active</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">kubernetes_cluster.active</code></td><td style="text-align: left">after a Kubernetes cluster becomes fully active</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">kubernetes_cluster.failed</code></td><td style="text-align: left">after a Kubernetes cluster fails to become active</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">kubernetes_cluster.scaled</code></td><td style="text-align: left">after the scale of a Kubernetes cluster has been changed</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">kubernetes_cluster.node_reaped</code></td><td style="text-align: left">after a Kubernetes node is removed</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">kubernetes_cluster.too_many_rebuilds</code></td><td style="text-align: left">if a Kubernetes cluster fails to become fully active and fails the rebuilding node process too many times</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">load_balancer.created</code></td><td style="text-align: left">after a URL has been added to our load balancer service</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">load_balancer.updated</code></td><td style="text-align: left">after the settings for a URL has been changed in our load balancer service</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">load_balancer.deleted</code></td><td style="text-align: left">after a URL has been removed from our load balancer service</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">network.created</code></td><td style="text-align: left">after a network is added to our database</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">network.updated</code></td><td style="text-align: left">after a network is renamed from our database</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">network.deleted</code></td><td style="text-align: left">after a network is removed from our database</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">ssh_key.created</code></td><td style="text-align: left">after an SSH key has been uploaded to our site</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">ssh_key.updated</code></td><td style="text-align: left">after an SSH key has been changed</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">ssh_key.deleted</code></td><td style="text-align: left">after an SSH key has been deleted</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">snapshot.created</code></td><td style="text-align: left">after a snapshot has been requested</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">snapshot.completed</code></td><td style="text-align: left">after a snapshot completes according to OpenStack&#39;s Glance service</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">snapshot.deleted</code></td><td style="text-align: left">after a snapshot has been removed</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">snapshot.failed</code></td><td style="text-align: left">after a snapshot fails to complete</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">snapshot.retrying</code></td><td style="text-align: left">after a snapshot fails to complete and is being queued to retry</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">template.created</code></td><td style="text-align: left">after a user template has been created</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">template.updated</code></td><td style="text-align: left">after a user template has been updated</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">template.deleted</code></td><td style="text-align: left">after a user template has been removed</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">volume.created</code></td><td style="text-align: left">after a volume has been created</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">volume.updated</code></td><td style="text-align: left">after a volume has been updated</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">volume.deleted</code></td><td style="text-align: left">after a volume has been removed</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">volume.attached</code></td><td style="text-align: left">after a volume has been attached</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">volume.detached</code></td><td style="text-align: left">after a volume has been detached</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">volume.resized</code></td><td style="text-align: left">after a volume has been resized</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">volume.renamed</code></td><td style="text-align: left">after a volume has been renamed</td>
+</tr>
+</tbody>
+</table>
+        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+</div>
+  </div>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create/1">create(params)</a>
+  </div>
+    <div class="summary-synopsis"><p>Create a webhook for an account.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete/1">delete(id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Delete a webhook from an account.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list/0">list()</a>
+  </div>
+    <div class="summary-synopsis"><p>List all webhooks for an account.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#test/1">test(id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Test a webhook.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update/2">update(id, params)</a>
+  </div>
+    <div class="summary-synopsis"><p>Update a webhook.</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:t/0">
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">t()</h1>
+      <a href="https://github.com/Lazarus404/civo/blob/master/lib/civo/webhooks.ex#L98" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <div class="specs">
+          <pre>t() :: %{events: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), url: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), secret: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+      </div>
+  </div>
+  <section class="docstring">
+  </section>
+</section>
+          </div>
+        </section>
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="create/1">
+  <div class="detail-header">
+    <a href="#create/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create(params)</h1>
+      <a href="https://github.com/Lazarus404/civo/blob/master/lib/civo/webhooks.ex#L164" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <div class="specs">
+          <pre>create(<a href="#t:t/0">t</a>()) :: <a href="Civo.Response.html#t:t/0">Civo.Response.t</a>() | <a href="Civo.Error.html#t:t/0">Civo.Error.t</a>()</pre>
+      </div>
+  </div>
+  <section class="docstring">
+<p>Create a webhook for an account.</p>
+<p>Any user can create webhooks for their account.</p>
+<h3 id="create/1-request" class="section-heading">
+  <a href="#create/1-request" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Request
+</h3>
+
+<p>The required parameters are listed below.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left">Name</th><th style="text-align: left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left"><code class="inline">events</code></td><td style="text-align: left">This is a list of events that the webhook should be triggered for. Alternative you can use a list containing a single entry of &quot;*&quot; to signify trigger for all events. (required)</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">url</code></td><td style="text-align: left">This is the URL to send the webhook to (required).</td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">secret</code></td><td style="text-align: left">This is if you want to specify your own secret, if not a random one will be created for you (optional).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="create/1-response" class="section-heading">
+  <a href="#create/1-response" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Response
+</h3>
+
+<p>The response is a JSON representation of the webhook, including the secret.</p>
+<pre><code class="nohighlight makeup elixir"><span class="p" data-group-id="1541414756-1">{</span><span class="w">
+  </span><span class="ss">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b8de2e4e-72f4-4911-83ee-f4fc030fc4a2&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1541414756-2">[</span><span class="s">&quot;*&quot;</span><span class="p" data-group-id="1541414756-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://api.example.com/webhook&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DfeFUON8gorc5Zj0hk4GT1M9QImnRL6J&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;disabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;failures&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;last_failure_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="1541414756-1">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="delete/1">
+  <div class="detail-header">
+    <a href="#delete/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete(id)</h1>
+      <a href="https://github.com/Lazarus404/civo/blob/master/lib/civo/webhooks.ex#L244" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <div class="specs">
+          <pre>delete(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="Civo.Response.html#t:t/0">Civo.Response.t</a>() | <a href="Civo.Error.html#t:t/0">Civo.Error.t</a>()</pre>
+      </div>
+  </div>
+  <section class="docstring">
+<p>Delete a webhook from an account.</p>
+<p>An account holder can remove one of their webhooks.</p>
+<h3 id="delete/1-request" class="section-heading">
+  <a href="#delete/1-request" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Request
+</h3>
+
+<p>This request takes the ID of the webhook 
+to delete. No confirmation step is required, 
+this step will remove the webhook immediately.</p>
+<h3 id="delete/1-response" class="section-heading">
+  <a href="#delete/1-response" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Response
+</h3>
+
+<p>The response from the server will be a JSON block. The response 
+will include a result field and the HTTP status will be 202 
+Accepted.</p>
+<pre><code class="nohighlight makeup elixir"><span class="p" data-group-id="0925207871-1">{</span><span class="w">
+  </span><span class="ss">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;success&quot;</span><span class="w">
+</span><span class="p" data-group-id="0925207871-1">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="list/0">
+  <div class="detail-header">
+    <a href="#list/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list()</h1>
+      <a href="https://github.com/Lazarus404/civo/blob/master/lib/civo/webhooks.ex#L131" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <div class="specs">
+          <pre>list() :: <a href="Civo.Response.html#t:t/0">Civo.Response.t</a>() | <a href="Civo.Error.html#t:t/0">Civo.Error.t</a>()</pre>
+      </div>
+  </div>
+  <section class="docstring">
+<p>List all webhooks for an account.</p>
+<h3 id="list/0-request" class="section-heading">
+  <a href="#list/0-request" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Request
+</h3>
+
+<p>This request doesn&#39;t take any parameters.</p>
+<h3 id="list/0-response" class="section-heading">
+  <a href="#list/0-response" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Response
+</h3>
+
+<p>The response from the server will be a JSON array of webhooks.</p>
+<pre><code class="nohighlight makeup elixir"><span class="p" data-group-id="9167243325-1">[</span><span class="w">
+  </span><span class="p" data-group-id="9167243325-2">{</span><span class="w">
+    </span><span class="ss">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b8de2e4e-72f4-4911-83ee-f4fc030fc4a2&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">&quot;events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9167243325-3">[</span><span class="s">&quot;instance.created&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;instance.deleted&quot;</span><span class="p" data-group-id="9167243325-3">]</span><span class="p">,</span><span class="w">
+    </span><span class="ss">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://api.example.com/webhook&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DfeFUON8gorc5Zj0hk4GT1M9QImnRL6J&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">&quot;disabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
+    </span><span class="ss">&quot;failures&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="ss">&quot;last_failure_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="9167243325-2">}</span><span class="p">,</span><span class="w">
+  </span><span class="o">/</span><span class="o">/</span><span class="w"> </span><span class="n">...</span><span class="w">
+</span><span class="p" data-group-id="9167243325-1">]</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="test/1">
+  <div class="detail-header">
+    <a href="#test/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">test(id)</h1>
+      <a href="https://github.com/Lazarus404/civo/blob/master/lib/civo/webhooks.ex#L217" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <div class="specs">
+          <pre>test(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="Civo.Response.html#t:t/0">Civo.Response.t</a>() | <a href="Civo.Error.html#t:t/0">Civo.Error.t</a>()</pre>
+      </div>
+  </div>
+  <section class="docstring">
+<p>Test a webhook.</p>
+<p>Once a webhook is created, you can test it.</p>
+<h3 id="test/1-request" class="section-heading">
+  <a href="#test/1-request" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Request
+</h3>
+
+<p>The test endpoint takes the ID of the webhook to test.</p>
+<h3 id="test/1-response" class="section-heading">
+  <a href="#test/1-response" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Response
+</h3>
+
+<p>The response is a JSON object that simply confirms that the 
+request to test the webhook was received.</p>
+<pre><code class="nohighlight makeup elixir"><span class="p" data-group-id="6111598507-1">{</span><span class="w">
+  </span><span class="ss">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;success&quot;</span><span class="w">
+</span><span class="p" data-group-id="6111598507-1">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="update/2">
+  <div class="detail-header">
+    <a href="#update/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update(id, params)</h1>
+      <a href="https://github.com/Lazarus404/civo/blob/master/lib/civo/webhooks.ex#L193" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <div class="specs">
+          <pre>update(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="#t:t/0">t</a>()) :: <a href="Civo.Response.html#t:t/0">Civo.Response.t</a>() | <a href="Civo.Error.html#t:t/0">Civo.Error.t</a>()</pre>
+      </div>
+  </div>
+  <section class="docstring">
+<p>Update a webhook.</p>
+<p>After creating a webhook, any user can update it.</p>
+<h3 id="update/2-request" class="section-heading">
+  <a href="#update/2-request" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Request
+</h3>
+
+<p>The update endpoint takes the ID of the webhook to update
+and the parameters of the webhook.</p>
+<h3 id="update/2-response" class="section-heading">
+  <a href="#update/2-response" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Response
+</h3>
+
+<p>The response is a JSON representation of the updated webhook, 
+including the secret.</p>
+<pre><code class="nohighlight makeup elixir"><span class="p" data-group-id="9234843672-1">{</span><span class="w">
+  </span><span class="ss">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b8de2e4e-72f4-4911-83ee-f4fc030fc4a2&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;events&quot;</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9234843672-2">[</span><span class="s">&quot;*&quot;</span><span class="p" data-group-id="9234843672-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://api.example.com/webhook&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DfeFUON8gorc5Zj0hk4GT1M9QImnRL6J&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;disabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;failures&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="ss">&quot;last_failure_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="9234843672-1">}</span></code></pre>
+  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.21.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

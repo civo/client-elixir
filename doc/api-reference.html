@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.21.2">
+    <meta name="project" content="civo v0.1.1">
+    <title>API Reference — civo v0.1.1</title>
+    <link rel="stylesheet" href="dist/html-de2388dc2f8074b0a4db.css" />
+    <script src="dist/sidebar_items-5be114019a.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/html-de2388dc2f8074b0a4db.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="readme.html" class="sidebar-projectName">
+civo      </a>
+      <h2 class="sidebar-projectVersion">
+        v0.1.1
+      </h2>
+    </div>
+      <a href="readme.html">
+        <img src="assets/logo.png" alt="civo" class="sidebar-projectImage">
+      </a>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+  <small class="app-vsn">civo v0.1.1</small>
+  API Reference
+</h1>
+
+  <section class="details-list">
+    <h2 id="modules" class="section-heading">
+  <a href="#modules" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Modules
+</h2>
+
+    <div class="summary">
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.html">Civo</a>
+  </div>
+    <div class="summary-synopsis"><p>This is a utility module that performs all of the actual
+HTTP CRUD requests to the Civo API. It is not intended
+to work with this module directly.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Charges.html">Civo.Charges</a>
+  </div>
+    <div class="summary-synopsis"><p>The system tracks usage of paid service on an hourly basis. 
+It doesn&#39;t track how much to charge for any particular product, 
+but it will report for each instance, IP address and snapshot 
+the amount of hours it&#39;s in use for.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.DNS.html">Civo.DNS</a>
+  </div>
+    <div class="summary-synopsis"><p>Civo host reverse DNS for all instances automatically. If you&#39;d 
+like to manage forward (normal) DNS for your domains, you can do 
+that for free within your account.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Error.html">Civo.Error</a>
+  </div>
+    <div class="summary-synopsis"><p>A struct representing a Civo API error.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Firewalls.html">Civo.Firewalls</a>
+  </div>
+    <div class="summary-synopsis"><p>The simplest solution for most customers is to configure a firewall within 
+their Instances using either iptables which is powerful or Uncomplicated 
+Firewall/ufw which is much simpler but only works on Ubuntu.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Instances.html">Civo.Instances</a>
+  </div>
+    <div class="summary-synopsis"><p>Instances are running virtual servers on the Civo cloud 
+platform. They can be of variable size.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Kubernetes.html">Civo.Kubernetes</a>
+  </div>
+    <div class="summary-synopsis"><p>Kubernetes clusters are a number of instances on the Civo 
+cloud platform running the Kubernetes cloud orchestration platform.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.LoadBalancers.html">Civo.LoadBalancers</a>
+  </div>
+    <div class="summary-synopsis"><p>If you want to create a load balancer for your instances, to 
+spread your web traffic between them then you can easily launch 
+a managed load balancer service on Civo. The pricing is described 
+on their pricing page.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Networks.html">Civo.Networks</a>
+  </div>
+    <div class="summary-synopsis"><p>To manage the private networks for an account, there are a 
+set of APIs for listing them, as well as adding, renaming 
+and removing them by ID.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Quota.html">Civo.Quota</a>
+  </div>
+    <div class="summary-synopsis"><p>Our quotas (and therefore our pricing), are based on a 
+combined allocation of CPU, RAM and disk. All customers 
+start on a basic quota level and after a period of proving 
+that the quota is being handled correctly or after a call 
+to our offices, we can increase this quota.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Regions.html">Civo.Regions</a>
+  </div>
+    <div class="summary-synopsis"><p>Civo will be hosted in multiple datacentres (a.k.a. regions), 
+with more coming online all the time. You can choose when 
+creating an instance which region to have it hosted in 
+(necessary if you want to share a private network between 
+your instances) - or you can leave it for Civo to allocate 
+you to a region if you don&#39;t care.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Request.html">Civo.Request</a>
+  </div>
+    <div class="summary-synopsis"><p>A struct representing a Civo API request. This
+module is not used directly, but intended
+for typing purposes in a response object.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Response.html">Civo.Response</a>
+  </div>
+    <div class="summary-synopsis"><p>A struct representing a Civo API response.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.SSH.html">Civo.SSH</a>
+  </div>
+    <div class="summary-synopsis"><p>To manage the SSH keys for an account that are used for 
+logging in to instances, there are a set of APIs for 
+listing the SSH public keys currently stored, as well 
+as adding and removing them by name.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Snapshots.html">Civo.Snapshots</a>
+  </div>
+    <div class="summary-synopsis"><p>Civo provides a backup service for Instances called snapshots. This takes 
+an exact copy of the instance&#39;s virtual hard drive. At any point an 
+instance can be restored to the state it was in when the snapshot was made. 
+These snapshots can also be used to build a new instance to scale 
+identically configured infrastructure.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Templates.html">Civo.Templates</a>
+  </div>
+    <div class="summary-synopsis"><p>Instances are built from a template. Templates may be either a 
+base OS install such as Ubuntu 14.04 LTS, a control-panel based 
+hosting setup or a fully setup application ready to configure 
+for your use.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.Volumes.html">Civo.Volumes</a>
+  </div>
+    <div class="summary-synopsis"><p>We provide a flexible size additional storage service for our 
+Instances called volumes. This creates and attaches an additional 
+virtual disk to the instance, allowing you to put backups or 
+database files on the separate volume and later move the volume 
+to another instance.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Civo.WebHooks.html">Civo.WebHooks</a>
+  </div>
+    <div class="summary-synopsis"><p>Open certain actions taking place within your account, Civo can 
+trigger a JSON POST callback to a URL or your choice.</p></div>
+</div>
+    </div>
+  </section>
+
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.21.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>
