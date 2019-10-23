@@ -1,6 +1,4 @@
-# Civo API
-
-![Civo](https://www.civo.com/assets/logo-footer-cbb3e639eee4da339cc26b27f98351fe215828f49dac3874cd036ffbb6f201c7.svg)
+# Elixir Client for the Civo API
 
 ## Introduction
 
