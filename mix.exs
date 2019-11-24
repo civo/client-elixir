@@ -13,7 +13,6 @@ defmodule Civo.MixProject do
       package: package(),
       docs: [
         extras: ["README.md", "CHANGELOG.md"],
-        logo: "logo.png",
         main: "readme"
       ]
     ]
@@ -39,8 +38,6 @@ defmodule Civo.MixProject do
       files: [
         "lib",
         "mix.exs",
-        "logo.png",
-        "logo.svg",
         "README.md",
         "CHANGELOG.md"
       ],
