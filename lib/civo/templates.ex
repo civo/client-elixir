@@ -110,9 +110,12 @@ defmodule Civo.Templates do
   }
   ```
   """
-  @spec update(t()) :: Civo.Response.t() | Civo.Error.t()
-  def update(%__MODULE__{} = params),
-    do: Civo.post(@path, params)
+  @spec update(String.t(), t()) :: Civo.Response.t() | Civo.Error.t()
+  def update(id, %__MODULE__{} = params),
+    do:
+      @path
+      |> Path.join(id)
+      |> Civo.put(params)
 
   @doc """
   List all templates for an account.
